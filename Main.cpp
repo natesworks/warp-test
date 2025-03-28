@@ -3,11 +3,10 @@
 
 #include "warpengine/Game.h"
 #include "warpengine/Types/Object.h"
-#include "warpengine/Components/Rectangle.h"
 #include "warpengine/Components/FilledRectangle.h"
-#include "warpengine/Components/Ellipse.h"
 #include "warpengine/Components/FilledEllipse.h"
 #include "warpengine/Components/Button.h"
+#include "warpengine/Components/PlayerMovement.h"
 
 void onClick(Game& game, Object& object)
 {
@@ -20,13 +19,13 @@ int main()
 {
     Game game = Game(960, 540, "Portal 3");
     game.addObject(Object(&game, Vector2(0, 0), Vector2(100, 100), 25, RGB(0, 0, 255)));
-    Object* object = game.getObject(0);
-    FilledRectangle rectangle(object);
-    object->addComponent(std::move(rectangle));
-    Button button(object, [&game, &object]() { onClick(game, *object); });
-    object->addComponent(std::move(button));
-    Rectangle hitbox(object);
-    object->addComponent(std::move(hitbox));
+    Object* player = game.getObject(0);
+    FilledRectangle rectangle(player);
+    player->addComponent(std::move(rectangle));
+    PlayerMovement playerMovement(player, 15);
+    player->addComponent(std::move(playerMovement));
+    //Rectangle hitbox(object);
+    //object->addComponent(std::move(hitbox));
 
     game.addObject(Object(&game, Vector2(450, 450), Vector2(100, 100), 25, RGB(255, 0, 0)));
     Object* object2 = game.getObject(1);
