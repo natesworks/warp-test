@@ -20,7 +20,7 @@ void onClick(Game& game, Object& object)
 int main()
 {
     Game game = Game(960, 540, "Portal 3");
-    game.addObject(Object(&game, Vector2(0, 0), Vector2(100, 100), 25, RGB(0, 0, 255)));
+    game.addObject(Object(&game, Vector2(0, 0), Vector2(100, 100), 0, RGB(0, 0, 255)));
     Object* player = game.getObject(0);
     FilledRectangle rectangle(player);
     player->addComponent(std::move(rectangle));
@@ -31,7 +31,7 @@ int main()
     //Rectangle hitbox(object);
     //object->addComponent(std::move(hitbox));
 
-    game.addObject(Object(&game, Vector2(450, 450), Vector2(100, 100), 25, RGB(255, 0, 0)));
+    game.addObject(Object(&game, Vector2(450, 450), Vector2(100, 100), 0, RGB(255, 0, 0)));
     Object* object2 = game.getObject(1);
     FilledEllipse ellipse(object2);
     object2->addComponent(std::move(ellipse));
