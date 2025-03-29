@@ -1,14 +1,7 @@
 #include <iostream>
 #include <thread>
 
-#include "warpengine/Game.h"
-#include "warpengine/Types/Object.h"
-#include "warpengine/Components/FilledRectangle.h"
-#include "warpengine/Components/Rectangle.h"
-#include "warpengine/Components/FilledEllipse.h"
-#include "warpengine/Components/Button.h"
-#include "warpengine/Components/PlayerMovement.h"
-#include "warpengine/Components/BoxCollider.h"
+#include "warpengine/WarpEngine.h"
 
 void onClick(Game &game, Object *object)
 {
@@ -20,28 +13,32 @@ void onClick(Game &game, Object *object)
 int main()
 {
     Game game = Game(960, 540, "Portal 3");
-    Object *player = game.addObject(new Object(&game, Vector2(100, 100), Vector2(100, 100), 0, RGB(0, 0, 255)));
-    player->addComponent(new FilledRectangle(player));
-    player->addComponent(new PlayerMovement(player, 15));
-    player->addComponent(new BoxCollider(player));
+    Object *player = game.addObject(Vector2(100, 100), Vector2(100, 100), 0, RGB(0, 0, 255));
+    player->addComponent<FilledRectangle>();
+    player->addComponent<PlayerMovement>(15);
+    player->addComponent<BoxCollider>();
 
-    Object *circle = game.addObject(new Object(&game, Vector2(450, 450), Vector2(100, 100), 0, RGB(255, 0, 0)));
-    circle->addComponent(new FilledEllipse(circle));
-    circle->addComponent(new Button(circle, [&game, circle]()
-                                    { onClick(game, circle); }));
+    Object *circle = game.addObject(Vector2(450, 450), Vector2(100, 100), 0, RGB(255, 0, 0));
+    circle->addComponent<FilledEllipse>();
+    circle->addComponent<Button>(std::function<void()>([&game, circle]() {
+        onClick(game, circle);
+    }));
+    
 
-    Object *square = game.addObject(new Object(&game, Vector2(200, 200), Vector2(100, 100), 0, RGB(0, 255, 0)));
-    square->addComponent(new Rectangle(square));
-    square->addComponent(new BoxCollider(square, [&game, &square]()
-                          { std::cout << "Collided with square" << std::endl; }));
+    Object *square = game.addObject(Vector2(200, 200), Vector2(100, 100), 0, RGB(0, 255, 0));
+    square->addComponent<Rectangle>();
+    square->addComponent<BoxCollider>(std::function<void()>([&game, &square]()
+                                      { std::cout << "Collided with square" << std::endl; }));
 
-    Object *square2 = game.addObject(new Object(&game, Vector2(400, 700), Vector2(100, 100), 0, RGB(255, 255, 0)));
-    square2->addComponent(new Rectangle(square2));
-    square2->addComponent(new BoxCollider(square2));
+    Object *square2 = game.addObject(Vector2(400, 700), Vector2(100, 100), 0, RGB(255, 255, 0));
+    square2->addComponent<Rectangle>();
+    square2->addComponent<BoxCollider>();
 
     game.start();
 
-    while (true) {}
+    while (true)
+    {
+    }
 
     return 0;
 }
